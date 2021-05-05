@@ -4,9 +4,11 @@ import progressor from "../api/progressor";
 const authReducer = (state, action) => {
   switch (action.type) {
     case "AUTH":
-      return {...state, 'user': action.payload};
-    case 'ADD_AUTH_ERROR':
-      return {...state, 'error': action.payload}
+      return { ...state, user: action.payload };
+    case "ADD_AUTH_ERROR":
+      return { ...state, errors: action.payload };
+    case "REMOVE_AUTH_ERROR":
+      return { ...state, errors: "" };
     default:
       return state;
   }
@@ -23,11 +25,21 @@ const signup = (dispatch) => {
         payload: res.data,
       });
 
-      if (res.status === 201) {
+      if (res.status === 201 || res.status === 200) {
         callback();
       }
     } catch (err) {
-      console.log(err);
+      if (err.response.data) {
+        dispatch({
+          type: "ADD_AUTH_ERROR",
+          payload: err.response.data,
+        });
+      } else {
+        dispatch({
+          type: "ADD_AUTH_ERROR",
+          payload: ["Something went wrong with signup!"],
+        });
+      }
     }
   };
 };
@@ -47,13 +59,24 @@ const signin = (dispatch) => {
         callback();
       }
     } catch (err) {
-      console.log(err);
+      dispatch({
+        type: "ADD_AUTH_ERROR",
+        payload: err.response.data,
+      });
     }
+  };
+};
+
+const removeAuthError = (dispatch) => {
+  return () => {
+    dispatch({
+      type: "REMOVE_AUTH_ERROR",
+    });
   };
 };
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signup, signin },
+  { signup, signin, removeAuthError },
   {}
 );

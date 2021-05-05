@@ -1,13 +1,18 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Context as AuthContext } from "../../context/authContext";
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // CSS Import
 import styles from "./AuthForm.module.css";
 
+toast.configure();
+
 const Signup = () => {
   const history = useHistory();
-  const { signup } = useContext(AuthContext);
+  const { state, signup, removeAuthError } = useContext(AuthContext);
 
   const [signupDetails, setSignupDetails] = useState({
     email: "",
@@ -25,6 +30,15 @@ const Signup = () => {
   const handleChange = (e) => {
     setSignupDetails({ ...signupDetails, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    if (state.errors) {
+      toast.error("Something went Wrong!", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      removeAuthError();
+    }
+  }, [state.errors, removeAuthError]);
 
   return (
     <div

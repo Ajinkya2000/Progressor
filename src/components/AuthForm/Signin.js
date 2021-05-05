@@ -1,12 +1,15 @@
-import { useState, useContext } from "react";
-import {Context as AuthContext} from '../../context/authContext'
-import {useHistory} from 'react-router-dom'
+import { useState, useContext, useEffect } from "react";
+import { Context as AuthContext } from "../../context/authContext";
+import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import styles from "./AuthForm.module.css";
 
+toast.configure();
+
 const Signin = () => {
   const history = useHistory();
-  const {signin} = useContext(AuthContext)
+  const { state, signin, removeAuthError } = useContext(AuthContext);
 
   const [loginDetails, setLoginDetails] = useState({
     email: "",
@@ -16,13 +19,22 @@ const Signin = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     signin(loginDetails, () => {
-      history.push('/dashboard');
-    })
+      history.push("/dashboard");
+    });
   };
 
   const handleChange = (e) => {
     setLoginDetails({ ...loginDetails, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    if (state.errors) {
+      toast.error("Something went Wrong with Login!", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      removeAuthError();
+    }
+  }, [state.errors, removeAuthError]);
 
   return (
     <div>
