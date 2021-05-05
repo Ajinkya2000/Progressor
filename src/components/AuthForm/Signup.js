@@ -1,10 +1,12 @@
 import { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { Context as AuthContext } from "../../context/authContext";
 
 // CSS Import
 import styles from "./AuthForm.module.css";
 
 const Signup = () => {
+  const history = useHistory();
   const { signup } = useContext(AuthContext);
 
   const [signupDetails, setSignupDetails] = useState({
@@ -15,7 +17,9 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    signup(signupDetails);
+    signup(signupDetails, () => {
+      history.push("/dashboard");
+    });
   };
 
   const handleChange = (e) => {

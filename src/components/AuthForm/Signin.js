@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import {Context as AuthContext} from '../../context/authContext'
+import {useHistory} from 'react-router-dom'
 
 import styles from "./AuthForm.module.css";
 
 const Signin = () => {
+  const history = useHistory();
+  const {signin} = useContext(AuthContext)
+
   const [loginDetails, setLoginDetails] = useState({
     email: "",
     password: "",
@@ -10,7 +15,9 @@ const Signin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(loginDetails);
+    signin(loginDetails, () => {
+      history.push('/dashboard');
+    })
   };
 
   const handleChange = (e) => {
