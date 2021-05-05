@@ -5,10 +5,14 @@ const authReducer = (state, action) => {
   switch (action.type) {
     case "AUTH":
       return { ...state, user: action.payload };
+    case "SIGN_OUT":
+      return { ...state, user: "" };
     case "ADD_AUTH_ERROR":
       return { ...state, errors: action.payload };
     case "REMOVE_AUTH_ERROR":
       return { ...state, errors: "" };
+    case "ADD_HANDLE_DATA":
+      return { ...state, handleData: action.payload };
     default:
       return state;
   }
@@ -67,16 +71,60 @@ const signin = (dispatch) => {
   };
 };
 
+const signout = (dispatch) => {
+  return () => {
+    dispatch({
+      type: "SIGN_OUT",
+    });
+  };
+};
+
 const removeAuthError = (dispatch) => {
   return () => {
+    localStorage.removeItem("token");
     dispatch({
       type: "REMOVE_AUTH_ERROR",
     });
   };
 };
 
+const addHandleData = (dispatch) => {
+  return async ({ platform, handle }, callback) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
+    try {
+      let res;
+      if (platform === "gfg") {
+        res = await progressor.post("gfg/", { gfg_handle: handle }, config);
+      } else {
+        res = await progressor.post(
+          "leetcode/",
+          { leetcode_handle: handle },
+          config
+        );
+      }
+      dispatch({
+        type: "ADD_HANDLE_DATA",
+        payload: res.data.data,
+      });
+
+      callback();
+
+    } catch (err) {
+      dispatch({
+        type: "ADD_AUTH_ERROR",
+        payload: err.response.data,
+      });
+    }
+  };
+};
+
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signup, signin, removeAuthError },
-  {}
+  { signup, signin, signout, removeAuthError, addHandleData },
+  { user: null, errors: "" }
 );

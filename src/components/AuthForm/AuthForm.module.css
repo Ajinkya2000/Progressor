@@ -69,16 +69,20 @@
   padding-right: 2em;
   width: 100%;
 }
-.formWrap form .button {
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  padding: 0.8em 0 10px 0.8em;
+  font-size: 1rem;
+  padding: .8em;
   background-color: #28a55f;
   border: none;
   color: #fff;
   cursor: pointer;
   text-transform: uppercase;
 }
-.formWrap form .button:hover {
+.button:hover {
   background-color: #4fda8c;
 }
 .formWrap form .checkbox {
@@ -131,4 +135,51 @@
 .formWrap .helpText p {
   text-align: center;
   font-size: 14px;
+}
+
+.load {
+  display: none;
+  width: 30px;
+  height: 30px;
+  border: 5px solid #fff;
+  border-radius: 100%;
+}
+
+.open {
+  border-top: 5px solid transparent;
+  -webkit-animation: load-animate infinite linear 1s;
+          animation: load-animate infinite linear 1s;
+}
+
+.hideDisplay {
+  display: none;
+}
+
+.showDisplay {
+  display: inline-block;
+}
+
+@-webkit-keyframes load-animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 0.35;
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes load-animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 0.35;
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

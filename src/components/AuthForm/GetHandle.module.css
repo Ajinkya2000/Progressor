@@ -1,0 +1,83 @@
+.outer {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  width: 400px;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3),
+    0 17px 17px 0 rgba(0, 0, 0, 0.15);
+}
+
+.formTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  font-size: 20px;
+  font-weight: bold;
+  background: #27ae60;
+  border-radius: 10px 10px 0 0;
+  color: #fff;
+}
+
+.radioButtons {
+  width: 80%;
+  margin: 2rem auto 0;
+  padding: 2rem 0 0;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.radioButtons p {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.radioButtons input {
+  margin-right: 10px;
+}
+
+.inputContainer {
+  width: 80%;
+  margin: 1rem auto;
+}
+
+.inputContainer input {
+  width: 100%;
+  appearance: none;
+  height: 35px;
+  padding: 5px 15px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  background: #e8ebed;
+  color: #576366;
+  font-size: 14px;
+}
+
+.buttonWrapper {
+    width: 80%;
+    margin: auto;
+}
+
+.button {
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 15px;
+  background: #27ae60;
+  font-size: 14px;
+  color: #fff;
+  margin: 1rem 0 1.5rem;
+}

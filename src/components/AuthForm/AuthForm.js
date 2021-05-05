@@ -31,7 +31,7 @@ const AuthForm = () => {
             className={!signupForm ? styles.active : ""}
             onClick={() => setsignupForm(false)}
           >
-            Login
+            Sign In
           </button>
         </div>
 

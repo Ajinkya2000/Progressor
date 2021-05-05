@@ -1,6 +1,9 @@
 import { useState, useContext, useEffect } from "react";
-import { Context as AuthContext } from "../../context/authContext";
 import { useHistory } from "react-router-dom";
+
+import { Context as AuthContext } from "../../context/authContext";
+import { Context as UtilsContext } from "../../context/utilsContext";
+
 import { toast } from "react-toastify";
 
 import styles from "./AuthForm.module.css";
@@ -10,6 +13,7 @@ toast.configure();
 const Signin = () => {
   const history = useHistory();
   const { state, signin, removeAuthError } = useContext(AuthContext);
+  const { state: utilsState, showLoading } = useContext(UtilsContext);
 
   const [loginDetails, setLoginDetails] = useState({
     email: "",
@@ -18,6 +22,7 @@ const Signin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    showLoading();
     signin(loginDetails, () => {
       history.push("/dashboard");
     });
@@ -55,8 +60,22 @@ const Signin = () => {
           value={loginDetails.password}
           onChange={handleChange}
         />
-
-        <input type="submit" className={styles.button} value="Login" />
+        <button type="submit" className={styles.button}>
+          <span
+            className={
+              !utilsState.showAuthLoading
+                ? styles.buttonText
+                : styles.hideDisplay
+            }
+          >
+            Sign In
+          </span>
+          <span
+            className={`${styles.load} ${styles.open} ${
+              utilsState.showAuthLoading ? styles.showDisplay : ""
+            }`}
+          ></span>
+        </button>
       </form>
       <div className={styles.helpText}>
         <p>

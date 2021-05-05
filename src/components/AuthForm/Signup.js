@@ -1,6 +1,8 @@
 import { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+
 import { Context as AuthContext } from "../../context/authContext";
+import { Context as UtilsContext } from "../../context/utilsContext";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,6 +15,7 @@ toast.configure();
 const Signup = () => {
   const history = useHistory();
   const { state, signup, removeAuthError } = useContext(AuthContext);
+  const { state: utilsState, showLoading } = useContext(UtilsContext);
 
   const [signupDetails, setSignupDetails] = useState({
     email: "",
@@ -22,8 +25,9 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    showLoading();
     signup(signupDetails, () => {
-      history.push("/dashboard");
+      history.push('/gethandle')
     });
   };
 
@@ -71,7 +75,22 @@ const Signup = () => {
           value={signupDetails.password}
           onChange={handleChange}
         />
-        <input type="submit" className={styles.button} value="Sign Up" />
+        <button type="submit" className={styles.button}>
+          <span
+            className={
+              !utilsState.showAuthLoading
+                ? styles.buttonText
+                : styles.hideDisplay
+            }
+          >
+            Sign Up
+          </span>
+          <span
+            className={`${styles.load} ${styles.open} ${
+              utilsState.showAuthLoading ? styles.showDisplay : ""
+            }`}
+          ></span>
+        </button>
       </form>
       <div className={styles.helpText}>
         <p>By signing up, you agree to our</p>
