@@ -4,16 +4,16 @@ import { Redirect, useHistory } from "react-router-dom";
 import { Context as AuthContext } from "../../context/authContext";
 import { Context as UtilsContext } from "../../context/utilsContext";
 
-
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import styles from "./GetHandle.module.css";
 
-toast.configure()
+toast.configure();
 
 const GetHandle = () => {
   const history = useHistory();
+  const [showLoadingScreen, setShowLoadingScreen] = useState(false);
   const [platform, setPlatform] = useState("leetcode");
   const [handle, setHandle] = useState("");
 
@@ -42,6 +42,7 @@ const GetHandle = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setShowLoadingScreen(true);
     addHandleData({ platform, handle }, () => {
       history.push("/dashboard");
     });
@@ -53,6 +54,19 @@ const GetHandle = () => {
         <Redirect to="/" />
       ) : (
         <div className={styles.outer}>
+          <div className={`${styles.validateHandleWrapper} ${showLoadingScreen ? styles.show : ""}`}>
+            <div className={styles.loader}>
+              <div className={`${styles.box} ${styles.box1}`}></div>
+              <div className={`${styles.box} ${styles.box2}`}></div>
+              <div className={`${styles.box} ${styles.box3}`}></div>
+              <div className={`${styles.box} ${styles.box4}`}></div>
+              <div className={`${styles.box} ${styles.box5}`}></div>
+            </div>
+            <p className={styles.loadingText}>
+              Loading your data, scraping{" "}
+              {platform === "leetcode" ? "Leetcode" : "Geeks for Geeks"} website
+            </p>
+          </div>
           <form className={styles.wrapper} onSubmit={handleSubmit}>
             <div className={styles.formTitle}>
               Enter your Handle or Username!

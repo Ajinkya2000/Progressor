@@ -14,6 +14,7 @@ toast.configure();
 
 const Signup = () => {
   const history = useHistory();
+
   const { state, signup, removeAuthError } = useContext(AuthContext);
   const { state: utilsState, showLoading, hideLoading } = useContext(
     UtilsContext

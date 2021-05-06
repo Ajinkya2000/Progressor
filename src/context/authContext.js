@@ -6,7 +6,7 @@ const authReducer = (state, action) => {
     case "AUTH":
       return { ...state, user: action.payload };
     case "SIGN_OUT":
-      return { ...state, user: "" };
+      return { ...state, user: null };
     case "ADD_AUTH_ERROR":
       return { ...state, errors: action.payload };
     case "REMOVE_AUTH_ERROR":
@@ -77,6 +77,7 @@ const signin = (dispatch) => {
 
 const signout = (dispatch) => {
   return () => {
+    localStorage.removeItem("token");
     dispatch({
       type: "SIGN_OUT",
     });
@@ -85,7 +86,6 @@ const signout = (dispatch) => {
 
 const removeAuthError = (dispatch) => {
   return () => {
-    localStorage.removeItem("token");
     dispatch({
       type: "REMOVE_AUTH_ERROR",
     });
