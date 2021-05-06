@@ -13,7 +13,7 @@ toast.configure();
 const Signin = () => {
   const history = useHistory();
   const { state, signin, removeAuthError } = useContext(AuthContext);
-  const { state: utilsState, showLoading } = useContext(UtilsContext);
+  const { state: utilsState, showLoading, hideLoading } = useContext(UtilsContext);
 
   const [loginDetails, setLoginDetails] = useState({
     email: "",
@@ -34,12 +34,17 @@ const Signin = () => {
 
   useEffect(() => {
     if (state.errors) {
-      toast.error("Something went Wrong with Login!", {
-        position: toast.POSITION.BOTTOM_RIGHT,
+      let keys = Object.keys(state.errors);
+      keys.forEach((key) => {
+        toast.error(state.errors[key][0], {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
       });
       removeAuthError();
+      hideLoading();
     }
-  }, [state.errors, removeAuthError]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.errors]);
 
   return (
     <div>
@@ -47,6 +52,7 @@ const Signin = () => {
         <input
           type="email"
           name="email"
+          required
           className={styles.input}
           placeholder="Email"
           value={loginDetails.email}
@@ -55,6 +61,7 @@ const Signin = () => {
         <input
           type="password"
           name="password"
+          required
           className={styles.input}
           placeholder="Password"
           value={loginDetails.password}

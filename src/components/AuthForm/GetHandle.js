@@ -16,7 +16,8 @@ const GetHandle = () => {
 
   useEffect(() => {
     hideLoading();
-  }, [hideLoading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,7 +45,7 @@ const GetHandle = () => {
                   name="selector"
                   onChange={() => setPlatform("gfg")}
                 />
-                <label for="f-option">Geeks for Geeks</label>
+                <label htmlFor="f-option">Geeks for Geeks</label>
               </div>
               <div>
                 <input
@@ -54,7 +55,7 @@ const GetHandle = () => {
                   defaultChecked
                   onChange={() => setPlatform("leetcode")}
                 />
-                <label for="s-option">Leetcode</label>
+                <label htmlFor="s-option">Leetcode</label>
               </div>
             </div>
             <div className={styles.inputContainer}>
@@ -64,7 +65,9 @@ const GetHandle = () => {
                 required
                 placeholder="Handle or Username"
                 value={handle}
-                onChange={(e) => setHandle(e.target.value)}
+                onChange={(e) => {
+                  setHandle(e.target.value);
+                }}
               />
             </div>
             <div className={styles.buttonWrapper}>

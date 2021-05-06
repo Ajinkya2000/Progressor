@@ -126,5 +126,5 @@ const addHandleData = (dispatch) => {
 export const { Provider, Context } = createDataContext(
   authReducer,
   { signup, signin, signout, removeAuthError, addHandleData },
-  { user: null, errors: "" }
+  { user: null, errors: "", handleData: null }
 );

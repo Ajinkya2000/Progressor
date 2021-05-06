@@ -15,7 +15,9 @@ toast.configure();
 const Signup = () => {
   const history = useHistory();
   const { state, signup, removeAuthError } = useContext(AuthContext);
-  const { state: utilsState, showLoading } = useContext(UtilsContext);
+  const { state: utilsState, showLoading, hideLoading } = useContext(
+    UtilsContext
+  );
 
   const [signupDetails, setSignupDetails] = useState({
     email: "",
@@ -27,7 +29,7 @@ const Signup = () => {
     e.preventDefault();
     showLoading();
     signup(signupDetails, () => {
-      history.push('/gethandle')
+      history.push("/gethandle");
     });
   };
 
@@ -37,12 +39,17 @@ const Signup = () => {
 
   useEffect(() => {
     if (state.errors) {
-      toast.error("Something went Wrong!", {
-        position: toast.POSITION.BOTTOM_RIGHT,
+      let keys = Object.keys(state.errors);
+      keys.forEach((key) => {
+        toast.error(state.errors[key][0], {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
       });
       removeAuthError();
+      hideLoading();
     }
-  }, [state.errors, removeAuthError]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.errors]);
 
   return (
     <div
@@ -54,6 +61,7 @@ const Signup = () => {
         <input
           name="email"
           type="email"
+          required
           className={styles.input}
           placeholder="Email"
           value={signupDetails.email}
@@ -62,6 +70,7 @@ const Signup = () => {
         <input
           name="name"
           type="text"
+          required
           className={styles.input}
           placeholder="Name"
           value={signupDetails.name}
@@ -70,6 +79,7 @@ const Signup = () => {
         <input
           name="password"
           type="password"
+          required
           className={styles.input}
           placeholder="Password"
           value={signupDetails.password}
