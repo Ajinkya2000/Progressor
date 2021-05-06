@@ -4,20 +4,41 @@ import { Redirect, useHistory } from "react-router-dom";
 import { Context as AuthContext } from "../../context/authContext";
 import { Context as UtilsContext } from "../../context/utilsContext";
 
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import styles from "./GetHandle.module.css";
+
+toast.configure()
 
 const GetHandle = () => {
   const history = useHistory();
   const [platform, setPlatform] = useState("leetcode");
   const [handle, setHandle] = useState("");
 
-  const { state: authState, addHandleData } = useContext(AuthContext);
+  const { state: authState, addHandleData, removeAuthError } = useContext(
+    AuthContext
+  );
   const { hideLoading } = useContext(UtilsContext);
 
   useEffect(() => {
     hideLoading();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (authState.errors) {
+      let keys = Object.keys(authState.errors);
+      keys.forEach((key) => {
+        toast.error(authState.errors[key][0], {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      });
+      removeAuthError();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authState.errors]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -51,6 +72,7 @@ const GetHandle = () => {
                 <input
                   type="radio"
                   id="s-option"
+                  required
                   name="selector"
                   defaultChecked
                   onChange={() => setPlatform("leetcode")}

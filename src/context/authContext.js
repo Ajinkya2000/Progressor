@@ -13,6 +13,10 @@ const authReducer = (state, action) => {
       return { ...state, errors: "" };
     case "ADD_HANDLE_DATA":
       return { ...state, handleData: action.payload };
+    case "GET_USER_FROM_TOKEN":
+      return { ...state, user: action.payload };
+    case "UPDATE_USER_HANDLE_STATUS":
+      return { ...state, user: { handle_verified: true } };
     default:
       return state;
   }
@@ -112,8 +116,35 @@ const addHandleData = (dispatch) => {
         payload: res.data.data,
       });
 
-      callback();
+      dispatch({
+        type: "UPDATE_USER_HANDLE_STATUS",
+      });
 
+      callback();
+    } catch (err) {
+      dispatch({
+        type: "ADD_AUTH_ERROR",
+        payload: err.response.data,
+      });
+    }
+  };
+};
+
+const getUserFromToken = (dispatch) => {
+  return async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+
+      const res = await progressor.get("user/", config);
+      console.log(res);
+      dispatch({
+        type: "GET_USER_FROM_TOKEN",
+        payload: res.data,
+      });
     } catch (err) {
       dispatch({
         type: "ADD_AUTH_ERROR",
@@ -125,6 +156,6 @@ const addHandleData = (dispatch) => {
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signup, signin, signout, removeAuthError, addHandleData },
+  { signup, signin, signout, removeAuthError, addHandleData, getUserFromToken },
   { user: null, errors: "", handleData: null }
 );

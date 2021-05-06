@@ -5,15 +5,18 @@ import { Context as UtilsContext } from "../../context/utilsContext";
 import { Context as AuthContext } from "../../context/authContext";
 
 const Dashboard = () => {
-  const { state: authState } = useContext(AuthContext);
+  const { state: authState, getUserFromToken } = useContext(AuthContext);
   const { hideLoading } = useContext(UtilsContext);
 
   useEffect(() => {
+    getUserFromToken();
     hideLoading();
-  }, [hideLoading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
+      {!authState.user && <Redirect to="/" />}
       {authState.user && !authState.user.handle_verified && (
         <Redirect to="/gethandle" />
       )}
