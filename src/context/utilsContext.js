@@ -43,5 +43,6 @@ export const { Provider, Context } = createDataContext(
     showAuthLoadingScreen,
     hideAuthLoadingScreen,
   },
-  { showButtonLoading: false, showAuthLoading: true }
+  { showButtonLoading: false, showAuthLoading: true },
+  "Utils Context"
 );

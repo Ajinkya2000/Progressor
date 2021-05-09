@@ -157,5 +157,6 @@ const getUserFromToken = (dispatch) => {
 export const { Provider, Context } = createDataContext(
   authReducer,
   { signup, signin, signout, removeAuthError, addHandleData, getUserFromToken },
-  { user: null, errors: "", handleData: null }
+  { user: null, errors: "", handleData: null },
+  "Auth Context"
 );

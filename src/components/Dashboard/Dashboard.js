@@ -1,33 +1,26 @@
 import { useEffect, useContext } from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import { Context as UtilsContext } from "../../context/utilsContext";
 import { Context as AuthContext } from "../../context/authContext";
 
+// Component Imports
+import Sidebar from "./Sidebar";
+import MainDashboard from "./DashboardDetail/MainDashboard";
+
 // Styles Import
 import styles from "./Dashboard.module.css";
 
-// Image Import
-import logo from "../../images/logo.png";
-
 const Dashboard = () => {
-  const { state: authState, getUserFromToken, signout } = useContext(
+  const { state: authState, getUserFromToken } = useContext(
     AuthContext
   );
-  const { hideLoadingButton, hideAuthLoadingScreen } = useContext(UtilsContext);
-  const history = useHistory();
+  const { hideLoadingButton } = useContext(UtilsContext);
 
   useEffect(() => {
     getUserFromToken();
     hideLoadingButton();
   }, []);
-
-  const handleLogout = () => {
-    signout(() => {
-      hideAuthLoadingScreen();
-      history.push("/");
-    });
-  };
 
   return (
     <>
@@ -37,22 +30,8 @@ const Dashboard = () => {
       )}
       <div className={styles.dashboardOuter}>
         <div className={styles.dashboardWrapper}>
-          <div className={styles.sideBar}>
-            <div className={styles.logoWrapper}>
-              <img src={logo} alt="logo" />
-              <h2>Progressor</h2>
-            </div>
-          </div>
-          <div className={styles.main}>
-            <div className={styles.topBar}>
-              <button className={styles.logoutBtn} onClick={handleLogout}>
-                <span>Sign Out</span>
-                <span>
-                  <i className="fas fa-sign-out-alt"></i>
-                </span>
-              </button>
-            </div>
-          </div>
+          <Sidebar />
+          <MainDashboard />
         </div>
       </div>
     </>

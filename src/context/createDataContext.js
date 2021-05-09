@@ -1,7 +1,8 @@
 import React, { useReducer } from "react";
 
-const createDataContext = (reducer, actions, defaultValue) => {
+const createDataContext = (reducer, actions, defaultValue, displayName="Give a Name") => {
   const Context = React.createContext();
+  Context.displayName = displayName;
 
   const Provider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, defaultValue);
