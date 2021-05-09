@@ -76,11 +76,12 @@ const signin = (dispatch) => {
 };
 
 const signout = (dispatch) => {
-  return () => {
+  return (callback) => {
     localStorage.removeItem("token");
     dispatch({
       type: "SIGN_OUT",
     });
+    callback();
   };
 };
 
@@ -140,7 +141,6 @@ const getUserFromToken = (dispatch) => {
       };
 
       const res = await progressor.get("user/", config);
-      console.log(res);
       dispatch({
         type: "GET_USER_FROM_TOKEN",
         payload: res.data,
@@ -148,7 +148,7 @@ const getUserFromToken = (dispatch) => {
     } catch (err) {
       dispatch({
         type: "ADD_AUTH_ERROR",
-        payload: err.response.data,
+        payload: { error: [err.response.data.detail] },
       });
     }
   };

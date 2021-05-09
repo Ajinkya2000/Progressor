@@ -13,7 +13,11 @@ toast.configure();
 const Signin = () => {
   const history = useHistory();
   const { state, signin, removeAuthError } = useContext(AuthContext);
-  const { state: utilsState, showLoading, hideLoading } = useContext(UtilsContext);
+  const {
+    state: utilsState,
+    showLoadingButton,
+    hideLoadingButton,
+  } = useContext(UtilsContext);
 
   const [loginDetails, setLoginDetails] = useState({
     email: "",
@@ -22,7 +26,7 @@ const Signin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    showLoading();
+    showLoadingButton();
     signin(loginDetails, () => {
       history.push("/dashboard");
     });
@@ -41,9 +45,8 @@ const Signin = () => {
         });
       });
       removeAuthError();
-      hideLoading();
+      hideLoadingButton();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.errors]);
 
   return (
@@ -70,7 +73,7 @@ const Signin = () => {
         <button type="submit" className={styles.button}>
           <span
             className={
-              !utilsState.showAuthLoading
+              !utilsState.showButtonLoading
                 ? styles.buttonText
                 : styles.hideDisplay
             }
@@ -79,7 +82,7 @@ const Signin = () => {
           </span>
           <span
             className={`${styles.load} ${styles.open} ${
-              utilsState.showAuthLoading ? styles.showDisplay : ""
+              utilsState.showButtonLoading ? styles.showDisplay : ""
             }`}
           ></span>
         </button>

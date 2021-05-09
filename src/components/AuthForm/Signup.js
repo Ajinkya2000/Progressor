@@ -16,9 +16,11 @@ const Signup = () => {
   const history = useHistory();
 
   const { state, signup, removeAuthError } = useContext(AuthContext);
-  const { state: utilsState, showLoading, hideLoading } = useContext(
-    UtilsContext
-  );
+  const {
+    state: utilsState,
+    showLoadingButton,
+    hideLoadingButton,
+  } = useContext(UtilsContext);
 
   const [signupDetails, setSignupDetails] = useState({
     email: "",
@@ -28,7 +30,7 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    showLoading();
+    showLoadingButton();
     signup(signupDetails, () => {
       history.push("/gethandle");
     });
@@ -47,9 +49,8 @@ const Signup = () => {
         });
       });
       removeAuthError();
-      hideLoading();
+      hideLoadingButton();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.errors]);
 
   return (
@@ -89,7 +90,7 @@ const Signup = () => {
         <button type="submit" className={styles.button}>
           <span
             className={
-              !utilsState.showAuthLoading
+              !utilsState.showButtonLoading
                 ? styles.buttonText
                 : styles.hideDisplay
             }
@@ -98,7 +99,7 @@ const Signup = () => {
           </span>
           <span
             className={`${styles.load} ${styles.open} ${
-              utilsState.showAuthLoading ? styles.showDisplay : ""
+              utilsState.showButtonLoading ? styles.showDisplay : ""
             }`}
           ></span>
         </button>

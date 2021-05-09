@@ -9,6 +9,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import styles from "./GetHandle.module.css";
 
+import LoadingScreen from "../utils/LoadingScreen";
+
 toast.configure();
 
 const GetHandle = () => {
@@ -20,15 +22,15 @@ const GetHandle = () => {
   const { state: authState, addHandleData, removeAuthError } = useContext(
     AuthContext
   );
-  const { hideLoading } = useContext(UtilsContext);
+  const { hideLoadingButton } = useContext(UtilsContext);
 
   useEffect(() => {
-    hideLoading();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    hideLoadingButton();
   }, []);
 
   useEffect(() => {
     if (authState.errors) {
+      setShowLoadingScreen(false);
       let keys = Object.keys(authState.errors);
       keys.forEach((key) => {
         toast.error(authState.errors[key][0], {
@@ -37,7 +39,6 @@ const GetHandle = () => {
       });
       removeAuthError();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authState.errors]);
 
   const handleSubmit = (e) => {
@@ -54,18 +55,12 @@ const GetHandle = () => {
         <Redirect to="/" />
       ) : (
         <div className={styles.outer}>
-          <div className={`${styles.validateHandleWrapper} ${showLoadingScreen ? styles.show : ""}`}>
-            <div className={styles.loader}>
-              <div className={`${styles.box} ${styles.box1}`}></div>
-              <div className={`${styles.box} ${styles.box2}`}></div>
-              <div className={`${styles.box} ${styles.box3}`}></div>
-              <div className={`${styles.box} ${styles.box4}`}></div>
-              <div className={`${styles.box} ${styles.box5}`}></div>
-            </div>
-            <p className={styles.loadingText}>
-              Loading your data, scraping{" "}
-              {platform === "leetcode" ? "Leetcode" : "Geeks for Geeks"} website
-            </p>
+          <div
+            className={`${styles.validateHandleWrapper} ${
+              showLoadingScreen ? styles.show : ""
+            }`}
+          >
+            <LoadingScreen platform={platform} />
           </div>
           <form className={styles.wrapper} onSubmit={handleSubmit}>
             <div className={styles.formTitle}>

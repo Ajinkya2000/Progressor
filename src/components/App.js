@@ -1,10 +1,27 @@
+import { useEffect, useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+import { Context as AuthContext } from "../context/authContext";
+import { Context as UtilsContext } from "../context/utilsContext";
 
 import AuthForm from "./AuthForm/AuthForm";
 import GetHandle from "./AuthForm/GetHandle";
 import Dashboard from "./Dashboard/Dashboard";
 
 function App() {
+  const { getUserFromToken } = useContext(AuthContext);
+  const { hideAuthLoadingScreen } = useContext(UtilsContext);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      getUserFromToken();
+    } else {
+      hideAuthLoadingScreen();
+    }
+    //eslint-disable-next-line
+  }, []);
+
   return (
     <div className="App">
       <Router>
