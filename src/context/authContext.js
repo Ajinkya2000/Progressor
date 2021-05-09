@@ -148,7 +148,7 @@ const getUserFromToken = (dispatch) => {
     } catch (err) {
       dispatch({
         type: "ADD_AUTH_ERROR",
-        payload: { error: [err.response.data.detail] },
+        payload: { error: [`${err.response.data.detail}, Please Sign in Again!!`] },
       });
     }
   };

@@ -9,18 +9,24 @@ import GetHandle from "./AuthForm/GetHandle";
 import Dashboard from "./Dashboard/Dashboard";
 
 function App() {
-  const { getUserFromToken } = useContext(AuthContext);
+  const { getUserFromToken, state:authState } = useContext(AuthContext);
   const { hideAuthLoadingScreen } = useContext(UtilsContext);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    if (token && !authState.errors) {
       getUserFromToken();
     } else {
       hideAuthLoadingScreen();
     }
     //eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (authState.errors) {
+      hideAuthLoadingScreen();
+    }
+  }, [authState.errors])
 
   return (
     <div className="App">
